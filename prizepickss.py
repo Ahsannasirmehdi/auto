@@ -1,3 +1,5 @@
+import time
+
 import requests
 from datetime import datetime
 import json
@@ -10,7 +12,7 @@ os.chdir(os.path.dirname(__file__))
 
 # ------- User Settings -------
 SLEEP_TIMEOUT = 5
-WEBHOOK_DISCORD_BOT = 'https://discord.com/api/webhooks/1013183637568618507/3UY6O-8A0nW9lqZnJNZV74gNcZH5CLsK67HBfbpBzZgi1i5RbD2u2cg2_luF77oZeGU7'
+WEBHOOK_DISCORD_BOT = 'https://discordapp.com/api/webhooks/1075931516158349402/jDcj_oSUhBUhSerS3O_5a_6LeSSF8DE3owJ6suKG9sBcD98nPMB7njuSjwdFljiHuyHl'
 SPORTS = {
     '7': {
 
@@ -59,7 +61,38 @@ SPORTS = {
         'data': {},
         'id': '231',
         'name': 'MLB LIVE'
-    }
+    },
+    '20': {
+
+            'data': {},
+            'id': '20',
+            'name': 'CBB'
+    },
+    '159': {
+
+            'data': {},
+            'id': '159',
+            'name': 'VAL'
+    },
+    '117': {
+
+            'data': {},
+            'id': '117',
+            'name': 'XFL'
+    },
+    '131': {
+
+            'data': {},
+            'id': '131',
+            'name': 'EuroGolf'
+    },
+    '145': {
+
+            'data': {},
+            'id': '145',
+            'name': 'COD'
+        }
+
 }
 
 # ------- User Settings -------
@@ -100,6 +133,7 @@ def sendMessage(sport_name, player_name, attr, old_score, new_score, vs, image):
 
     ]
     })
+    # print(r.text)
 
 
 def getStats(drive, sport_id):
@@ -153,6 +187,7 @@ if __name__ == '__main__':
     print('[-] Sports : %s' % len(SPORTS.keys()))
     counter = 1
     while True:
+        time.sleep(1)
         try:
             opts = uc.ChromeOptions()
             opts.add_argument(f'--headless')
@@ -181,10 +216,9 @@ if __name__ == '__main__':
                                 for attr in opponent.keys():
                                     if attr in closed_attrs:
                                         continue
-                                    attr_cache_exist = SPORTS[sport_id]['data'][player_id].get(
-                                        opponent_id).get(attr) is not None
+                                    attr_cache_exist = SPORTS[sport_id]['data'][player_id].get(opponent_id).get(attr) is not None
                                     if opponent_cache_exist and attr_cache_exist and opponent[attr] != SPORTS[sport_id]['data'][player_id].get(opponent_id)[attr]:
-                                        # Send Discord Message
+                                        print('Message send')
                                         sendMessage(SPORTS[sport_id]['name'], opponent['name'], attr, SPORTS[sport_id]['data'][player_id].get(
                                             opponent_id).get(attr), opponent[attr], opponent_id, opponent['image'])
 
